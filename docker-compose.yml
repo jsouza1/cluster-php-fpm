@@ -1,0 +1,32 @@
+services:
+  web01:
+    build: .
+    image: web_app:latest 
+    pull_policy: never
+    networks:
+      - backend
+    
+  web02:
+    image: web_app:latest
+    pull_policy: never
+    networks:
+      - backend
+
+  loadbalancer:
+    image: nginx:latest
+    volumes:
+      - type: bind
+        source: ./configs/loadbalancer.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+    depends_on:
+      - web01
+      - web02
+
+networks:
+  backend:
+    
