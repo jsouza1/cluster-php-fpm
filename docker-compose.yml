@@ -1,31 +1,39 @@
 services:
-  web01:
-    build: .
-    image: web_app:latest 
-    pull_policy: never
-    networks:
-      - backend
-    
-  web02:
-    image: web_app:latest
-    pull_policy: never
+  app01:
+    image: php:8.2-fpm
+    volumes:
+      - type: bind
+        source: ./say_ip.php
+        target: /var/www/html/index.php
+        read_only: true
     networks:
       - backend
 
-  loadbalancer:
-    image: nginx:latest
+  app02:
+    image: php:8.2-fpm
     volumes:
       - type: bind
-        source: ./configs/loadbalancer.conf
-        target: /etc/nginx/conf.d/default.conf
+        source: ./say_ip.php
+        target: /var/www/html/index.php
+        read_only: true
+    networks:
+      - backend
+
+  apache:
+    image: httpd:latest
+    volumes:
+      - type: bind
+        source: ./configs/apache-balancer.conf
+        target: /usr/local/apache2/conf/extra/httpd-balancer.conf
+        read_only: true
+      - type: bind
+        source: ./configs/httpd.conf
+        target: /usr/local/apache2/conf/httpd.conf
         read_only: true
     networks:
       - backend
     ports:
       - "8080:80"
-    depends_on:
-      - web01
-      - web02
 
 networks:
   backend:
