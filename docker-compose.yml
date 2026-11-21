@@ -1,31 +1,20 @@
 services:
   app01:
-    image: php:8.2-fpm
-    volumes:
-      - type: bind
-        source: ./say_ip.php
-        target: /var/www/html/index.php
-        read_only: true
+    build: .
+    image: app
+    pull_policy: never    
     networks:
       - backend
 
   app02:
-    image: php:8.2-fpm
-    volumes:
-      - type: bind
-        source: ./say_ip.php
-        target: /var/www/html/index.php
-        read_only: true
+    image: app
+    pull_policy: never    
     networks:
       - backend
 
   apache:
     image: httpd:latest
     volumes:
-      - type: bind
-        source: ./configs/apache-balancer.conf
-        target: /usr/local/apache2/conf/extra/httpd-balancer.conf
-        read_only: true
       - type: bind
         source: ./configs/httpd.conf
         target: /usr/local/apache2/conf/httpd.conf

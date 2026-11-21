@@ -6,3 +6,6 @@ docker run -p 8000:80 step01
 
 # run docker compose
 docker compose up --build
+
+# criar projeto symfony
+symfony new my_app --version=lts
