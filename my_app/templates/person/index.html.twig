@@ -1,0 +1,14 @@
+<h3>Pessoas</h3>
+
+<a href="{{ path('person_create') }}">Criar</a>
+
+<table border="1">
+    <tr>
+        <td>nome</td>
+    </tr>
+    {% for person in people %}
+        <tr>
+            <td>{{ person.name }}</td>
+        </tr>
+    {% endfor %}
+</table>

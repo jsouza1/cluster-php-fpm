@@ -1,0 +1,16 @@
+<h3>Nó aplicação</h3>
+
+<a href="{{ path('application_node_create') }}">Criar</a>
+
+<table border="1">
+    <tr>
+        <td>nome</td>
+        <td>ip</td>
+    </tr>
+    {% for node in applicationNodes %}
+        <tr>
+            <td>{{ node.name }}</td>
+            <td>{{ node.ip }}</td>
+        </tr>
+    {% endfor %}
+</table>
