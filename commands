@@ -24,3 +24,6 @@ php .\bin\console make:migration
 
 # aplicar migration
 php .\bin\console doctrine:migrations:migrate
+
+# teste de carga
+2load -c100 -m100 --h1 --duration=10 --warm-up-time=5 http://localhost:8080/statics/load

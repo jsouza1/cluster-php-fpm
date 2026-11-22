@@ -8,6 +8,10 @@ services:
         source: ./configs/php.ini
         target: /usr/local/etc/php/conf.d/php.ini
         read_only: true
+      - type: bind
+        source: ./configs/www.conf
+        target: /usr/local/etc/php-fpm.d/www.conf
+        read_only: true
     networks:
       - backend
       - database
@@ -28,6 +32,10 @@ services:
         source: ./configs/php.ini
         target: /usr/local/etc/php/conf.d/php.ini
         read_only: true 
+      - type: bind
+        source: ./configs/www.conf
+        target: /usr/local/etc/php-fpm.d/www.conf
+        read_only: true
     networks:
       - backend
       - database
