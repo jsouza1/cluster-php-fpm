@@ -47,6 +47,10 @@ services:
         source: ./configs/httpd.conf
         target: /usr/local/apache2/conf/httpd.conf
         read_only: true
+      - type: bind
+        source: ./my_app/public
+        target: /app/public
+        read_only: true
     networks:
       - backend
     ports:
