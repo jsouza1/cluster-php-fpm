@@ -2,21 +2,43 @@ services:
   app01:
     build: .
     image: app
-    pull_policy: never    
+    pull_policy: never
+    volumes:
+      - type: bind
+        source: ./configs/php.ini
+        target: /usr/local/etc/php/conf.d/php.ini
+        read_only: true
     networks:
       - backend
       - database
+      - session
     depends_on:
       - mysql
+      - redis
+    environment:
+      REDIS_PASSWORD: 123456
+      DATABASE_URL: "mysql://root:123456@mysql:3306/app?serverVersion=8.0.32&charset=utf8mb4"
+      APP_ENV: prod
 
   app02:
     image: app
-    pull_policy: never    
+    pull_policy: never   
+    volumes:
+      - type: bind
+        source: ./configs/php.ini
+        target: /usr/local/etc/php/conf.d/php.ini
+        read_only: true 
     networks:
       - backend
       - database
+      - session
     depends_on:
       - mysql
+      - redis
+    environment:
+      REDIS_PASSWORD: 123456
+      DATABASE_URL: "mysql://root:123456@mysql:3306/app?serverVersion=8.0.32&charset=utf8mb4"
+      APP_ENV: prod
 
   apache:
     image: httpd:latest
@@ -45,9 +67,16 @@ services:
       - PMA_ARBITRARY=1
     networks:
       - database
-    
 
+  redis:
+    image: redis
+    environment:
+      REDIS_PASSWORD: 123456
+    networks:
+      - session
+    
 networks:
   backend:
   database:
+  session:
     

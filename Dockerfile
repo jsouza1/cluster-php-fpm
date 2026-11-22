@@ -9,17 +9,17 @@ RUN --mount=type=cache,target=/root/.composer/cache \
 
 FROM php:8.2-fpm
 
-ENV APP_ENV=prod
-ENV DATABASE_URL="mysql://root:123456@mysql:3306/app?serverVersion=8.0.32&charset=utf8mb4"
-
 RUN docker-php-ext-install pdo_mysql
 
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
 WORKDIR /app
+
+RUN mkdir -p /app/var/cache/prod && \
+    chown -R www-data:www-data /app/var/cache/prod
 
 COPY --from=build /build/vendor ./vendor
 COPY ./my_app .
 
-RUN mkdir -p /app/var/cache && \
-    chown -R www-data:www-data /app/var/cache
-
-USER www-data
+# USER www-data
